@@ -2,11 +2,13 @@ from fastapi import FastAPI, status
 from .routers import users, blogs, auth
 from .database import engine
 from . import models
-
+from mangum import Mangum
 models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
+
+handler = Mangum(app)
 
 app.include_router(users.router)
 app.include_router(blogs.router)
